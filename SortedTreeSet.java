@@ -2,7 +2,7 @@ class SortedTreeSet implements SortedTreeSetInterface{
     private Person data;
     private SortedTreeSet left;
     private SortedTreeSet right;
-	private String stringOuput = "Name    Height (cm)    Weight (kg)";
+	private String stringOuput;
 
 	// empty constructor used for intialization.
 	public SortedTreeSet() {
@@ -57,9 +57,10 @@ class SortedTreeSet implements SortedTreeSetInterface{
     }
 
 	// adds a reference to a new node to the current node.
-	// uses compareToIgnoreCase (returns a positive or negative number based on
+	// uses compareToIgnoreCase to sort(returns a positive or negative number based on
 	// the lexicographical value of the two string [alphabatizes insertion])
 	// https://www.geeksforgeeks.org/java/java-string-comparetoignorecase-method/
+	// Duplicates are ignored (compareName == 0).
     @Override
     public void add(Person p) {
         int compareName = p.getName().compareToIgnoreCase(data.getName());
@@ -99,6 +100,7 @@ class SortedTreeSet implements SortedTreeSetInterface{
 
 	@Override
     public String toString() {
+		this.stringOuput = "Name    Height (cm)    Weight (kg)";
 		this.treeTraversal(this);
 		return this.stringOuput;
     }

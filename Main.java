@@ -1,21 +1,22 @@
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
+
 class Main {
+    @SuppressWarnings("ConvertToTryWithResources")
     public static void main(String[] args) {
-       // open the file passed via command line args.
+        // open the file passed via command line args.
 		File inputFile = new File(args[0]);
-		char skipFirstRow = 'Y';
-        char firstPerson = 'Y';
+		boolean skipHeader = true;
+        boolean rootNode = true;
 		
-		// PersonImperialSet listOfPeople = new PersonImperialSet();
-		SortedTreeSet alphaList = new SortedTreeSet();
+        // updated with implementation for SortedTreeSet
+		SortedTreeSet hrBinaryTree = new SortedTreeSet();
 
 		String path = new File("").getAbsolutePath();
 
-		// test person - not used in final version, requested in pt. 1
-		// Person newPerson = new Person("Marcus", 72, 111);
 
 		try {
 			// open a scanner to read the file. try-catch for ioexceptions.
@@ -26,8 +27,8 @@ class Main {
 			// add the person data to the list of people.
 			while (scnr.hasNextLine()) {
 
-				if (skipFirstRow == 'Y') {
-                    skipFirstRow = 'N';
+				if (skipHeader) {
+                    skipHeader = false;
 					scnr.nextLine();
                     continue;
                 }
@@ -37,13 +38,13 @@ class Main {
 				double weight = scnr.nextDouble();
 				
 				// Person tmpPerson = new Person(name, height, weight);
-				Person tmpPerson1 = new Person(name, height, weight);
+				Person nodeData = new Person(name, height, weight);
 				// listOfPeople.add(tmpPerson);
-                if (firstPerson == 'Y') {
-                    alphaList = new SortedTreeSet(tmpPerson1);
-                    firstPerson = 'N';
+                if (rootNode) {
+                    hrBinaryTree = new SortedTreeSet(nodeData);
+                    rootNode = false;
                 } else {
-                    alphaList.add(tmpPerson1);
+                    hrBinaryTree.add(nodeData);
                 }
 				
 			}
@@ -54,21 +55,17 @@ class Main {
 			System.out.print("File not found.");
 			e.printStackTrace();
 		}
-		// alphaList.sort();
-		System.out.print(alphaList + "\n");
-		// System.out.print(listOfPeople);		
 
-		// try {
-		// 	FileWriter fWriter = new FileWriter(path + "\\hr_imperial_set_output.txt");
-		// 	fWriter.write(listOfPeople.toString());
-		// 	fWriter.close();
+		System.out.print(hrBinaryTree + "\n");
 
-		// 	FileWriter fWriter2 = new FileWriter(path + "\\hr_ordered_set_output.txt");
-		// 	fWriter2.write(alphaList.toString());
-		// 	fWriter2.close();
+		try {
+			FileWriter fWriter2 = new FileWriter(path + "\\hr_ordered_set_output.txt");
+			fWriter2.write(hrBinaryTree.toString());
+			fWriter2.close();
+            System.out.print("\nHR data was successfully written to:\n" + path + "\\hr_ordered_set_output.txt\n");
 
-		// } catch (IOException e) {
-		// 	System.out.print(e.getMessage());
-		// }
+		} catch (IOException e) {
+			System.out.print(e.getMessage());
+		}
 	}
 }
